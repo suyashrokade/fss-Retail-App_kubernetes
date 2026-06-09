@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: retail-app-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: retail
+
+  template:
+    metadata:
+      labels:
+        app: retail
+
+    spec:
+      containers:
+      - name: retail-container
+        image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+        imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+
+        ports:
+        - containerPort: {{ .Values.app.service.port }}
+
+        env:
+        - name: MONGODB_URI
+          valueFrom:
+            configMapKeyRef:
+              name: retail-app-config
+              key: MONGODB_URI
+
+        - name: SESSION_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: retail-app-config
+              key: SESSION_SECRET
+
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: retail-app-config
+              key: PORT
+
+        - name: EMAIL_USER
+          valueFrom:
+            secretKeyRef:
+              name: retail-app-secret
+              key: EMAIL_USER
+
+        - name: EMAIL_PASS
+          valueFrom:
+            secretKeyRef:
+              name: retail-app-secret
+              key: EMAIL_PASS

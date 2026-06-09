@@ -1,0 +1,28 @@
+namespace: atharva-ns
+
+replicaCount: 4
+
+app:
+  image:
+    repository: saiteja2502/userprofileretail
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  service:
+    type: LoadBalancer
+    port: 3130
+
+mongodb:
+  image:
+    repository: mongo
+    tag: latest
+
+config:
+  MONGODB_URI: mongodb://mongodb:27017/retaildb
+  SESSION_SECRET: retail-secret
+  PORT: "3130"
+  MONGO_INITDB_DATABASE: retaildb
+
+secret:
+  EMAIL_USER: admin@gmail.com
+  EMAIL_PASS: password123

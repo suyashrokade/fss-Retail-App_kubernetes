@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: retail-app-config
+  namespace: {{ .Values.namespace }}
+data:
+  MONGODB_URI: {{ .Values.config.MONGODB_URI | quote }}
+  SESSION_SECRET: {{ .Values.config.SESSION_SECRET | quote }}
+  PORT: {{ .Values.config.PORT | quote }}
+  MONGO_INITDB_DATABASE: {{ .Values.config.MONGO_INITDB_DATABASE | quote }}
